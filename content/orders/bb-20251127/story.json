@@ -1,0 +1,282 @@
+{
+  "slug": "bb-20251127",
+  "kind": "baby_first_birthday",
+  "theme": "paper-warm",
+  "meta": {
+    "title": "米奇的一周岁",
+    "description": "米奇的一周岁纪念页，写给未来的每一天。"
+  },
+  "access": {
+    "mode": "password",
+    "password": "1127",
+    "expiresAt": "2028-11-27",
+    "noindex": true
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "enabled": true,
+      "kind": "hero",
+      "name": "米奇",
+      "tagline": "谢谢你选中我们做你的爸爸妈妈",
+      "birthday": "2025-11-27",
+      "cover": {
+        "src": "cover.jpg",
+        "alt": "米奇的封面",
+        "ratio": "4:5"
+      },
+      "showAge": true
+    },
+    {
+      "id": "months",
+      "enabled": true,
+      "kind": "timeline12",
+      "items": [
+        {
+          "month": 1,
+          "photo": {
+            "src": "m01.jpg",
+            "alt": "1 个月",
+            "ratio": "4:5"
+          },
+          "note": "1 个月",
+          "date": ""
+        },
+        {
+          "month": 2,
+          "photo": {
+            "src": "m02.jpg",
+            "alt": "2 个月",
+            "ratio": "4:5"
+          },
+          "note": "2 个月",
+          "date": ""
+        },
+        {
+          "month": 3,
+          "photo": {
+            "src": "m03.jpg",
+            "alt": "3 个月",
+            "ratio": "4:5"
+          },
+          "note": "3 个月",
+          "date": ""
+        },
+        {
+          "month": 4,
+          "photo": {
+            "src": "m04.jpg",
+            "alt": "4 个月",
+            "ratio": "4:5"
+          },
+          "note": "4 个月",
+          "date": ""
+        },
+        {
+          "month": 5,
+          "photo": {
+            "src": "m05.jpg",
+            "alt": "5 个月",
+            "ratio": "4:5"
+          },
+          "note": "5 个月",
+          "date": ""
+        },
+        {
+          "month": 6,
+          "photo": {
+            "src": "m06.jpg",
+            "alt": "6 个月",
+            "ratio": "4:5"
+          },
+          "note": "6 个月",
+          "date": ""
+        },
+        {
+          "month": 7,
+          "photo": {
+            "src": "m07.jpg",
+            "alt": "7 个月",
+            "ratio": "4:5"
+          },
+          "note": "7 个月",
+          "date": ""
+        },
+        {
+          "month": 8,
+          "photo": {
+            "src": "m08.jpg",
+            "alt": "8 个月",
+            "ratio": "4:5"
+          },
+          "note": "8 个月",
+          "date": ""
+        },
+        {
+          "month": 9,
+          "photo": {
+            "src": "m09.jpg",
+            "alt": "9 个月",
+            "ratio": "4:5"
+          },
+          "note": "9 个月",
+          "date": ""
+        },
+        {
+          "month": 10,
+          "photo": {
+            "src": "m10.jpg",
+            "alt": "10 个月",
+            "ratio": "4:5"
+          },
+          "note": "10 个月",
+          "date": ""
+        },
+        {
+          "month": 11,
+          "photo": {
+            "src": "m11.jpg",
+            "alt": "11 个月",
+            "ratio": "4:5"
+          },
+          "note": "11 个月",
+          "date": ""
+        },
+        {
+          "month": 12,
+          "photo": {
+            "src": "m12.jpg",
+            "alt": "12 个月",
+            "ratio": "4:5"
+          },
+          "note": "12 个月",
+          "date": ""
+        }
+      ]
+    },
+    {
+      "id": "growth",
+      "enabled": true,
+      "kind": "growth",
+      "points": []
+    },
+    {
+      "id": "zhuazhou",
+      "enabled": true,
+      "kind": "zhuazhou",
+      "items": [
+        {
+          "key": "brush",
+          "emoji": "🖌️",
+          "label": "画笔",
+          "meaning": "以后大概会很喜欢涂涂画画。",
+          "fortune": "抓到了画笔"
+        },
+        {
+          "key": "book",
+          "emoji": "📖",
+          "label": "书",
+          "meaning": "是个坐得住、爱看书的小朋友。",
+          "fortune": "抓到了书"
+        },
+        {
+          "key": "abacus",
+          "emoji": "🧮",
+          "label": "算盘",
+          "meaning": "对数字敏感，将来会算账。",
+          "fortune": "抓到了算盘"
+        },
+        {
+          "key": "money",
+          "emoji": "💰",
+          "label": "钱袋",
+          "meaning": "一辈子不缺钱花。",
+          "fortune": "抓到了钱袋"
+        },
+        {
+          "key": "seal",
+          "emoji": "🎖️",
+          "label": "印章",
+          "meaning": "将来是要做主的人。",
+          "fortune": "抓到了印章"
+        },
+        {
+          "key": "doctor",
+          "emoji": "🩺",
+          "label": "听诊器",
+          "meaning": "心细，会照顾人。",
+          "fortune": "抓到了听诊器"
+        }
+      ]
+    },
+    {
+      "id": "gallery",
+      "enabled": true,
+      "kind": "gallery",
+      "photos": [
+        {
+          "src": "p01.jpg",
+          "alt": "",
+          "ratio": "4:5"
+        },
+        {
+          "src": "p02.jpg",
+          "alt": "",
+          "ratio": "4:5"
+        },
+        {
+          "src": "p03.jpg",
+          "alt": "",
+          "ratio": "4:5"
+        },
+        {
+          "src": "p04.jpg",
+          "alt": "",
+          "ratio": "4:5"
+        },
+        {
+          "src": "p05.jpg",
+          "alt": "",
+          "ratio": "4:5"
+        },
+        {
+          "src": "p06.jpg",
+          "alt": "",
+          "ratio": "4:5"
+        }
+      ]
+    },
+    {
+      "id": "letter",
+      "enabled": true,
+      "kind": "letter",
+      "from": "妈妈",
+      "to": "米奇",
+      "body": "在这里写下你想对宝宝说的话。\n等他长大，再读给他听。"
+    },
+    {
+      "id": "future",
+      "enabled": true,
+      "kind": "futureLetter",
+      "title": "给十八岁的你",
+      "unlockAt": "2043-11-27",
+      "body": "写下这些话的时候，你还很小。等你读到它，应该已经长大了。",
+      "from": "妈妈",
+      "writtenAt": "2026.11.10 写"
+    },
+    {
+      "id": "bless",
+      "enabled": false,
+      "kind": "guestbook",
+      "messages": []
+    },
+    {
+      "id": "end",
+      "enabled": true,
+      "kind": "outro",
+      "thanks": "谢谢你来看我",
+      "signature": "米奇 · 一周岁",
+      "showQr": true
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "slug": "bb-20250417",
+  "kind": "baby_first_birthday",
+  "theme": "paper-warm",
+  "meta": {
+    "title": "小满的一周岁",
+    "description": "2025.04.17 — 2026.04.17，谢谢你选中我们做你的爸爸妈妈。",
+    "look": "warm"
+  },
+  "access": {
+    "mode": "password",
+    "password": "0417",
+    "expiresAt": "2028-04-17",
+    "noindex": true
+  },
+  "sections": [
+    {
+      "id": "hero",
+      "kind": "hero",
+      "enabled": true,
+      "name": "小满",
+      "tagline": "谢谢你选中我们做你的爸爸妈妈",
+      "birthday": "2025-04-17",
+      "cover": { "src": "cover.jpg", "alt": "满月那天的你", "ratio": "4:5" },
+      "showAge": true
+    },
+    {
+      "id": "months",
+      "kind": "timeline12",
+      "enabled": true,
+      "items": [
+        { "month": 1, "photo": { "src": "m01.jpg", "alt": "第一个月", "ratio": "4:5" }, "note": "第一次抬头", "date": "2025.05" },
+        { "month": 2, "photo": { "src": "m02.jpg", "alt": "第二个月", "ratio": "4:5" }, "note": "会笑了", "date": "2025.06" },
+        { "month": 3, "photo": { "src": "m03.jpg", "alt": "第三个月", "ratio": "4:5" }, "note": "第一次翻身", "date": "2025.07" },
+        { "month": 4, "photo": { "src": "m04.jpg", "alt": "第四个月", "ratio": "4:5" }, "note": "抓得住摇铃", "date": "2025.08" },
+        { "month": 5, "photo": { "src": "m05.jpg", "alt": "第五个月", "ratio": "4:5" }, "note": "会坐一小会儿", "date": "2025.09" },
+        { "month": 6, "photo": { "src": "m06.jpg", "alt": "第六个月", "ratio": "4:5" }, "note": "第一颗乳牙", "date": "2025.10" },
+        { "month": 7, "photo": { "src": "m07.jpg", "alt": "第七个月", "ratio": "4:5" }, "note": "第一次吃辅食", "date": "2025.11" },
+        { "month": 8, "photo": { "src": "m08.jpg", "alt": "第八个月", "ratio": "4:5" }, "note": "会叫妈妈", "date": "2025.12" },
+        { "month": 9, "photo": { "src": "m09.jpg", "alt": "第九个月", "ratio": "4:5" }, "note": "扶着沙发站起来", "date": "2026.01" },
+        { "month": 10, "photo": { "src": "m10.jpg", "alt": "第十个月", "ratio": "4:5" }, "note": "第一次拍手", "date": "2026.02" },
+        { "month": 11, "photo": { "src": "m11.jpg", "alt": "第十一个月", "ratio": "4:5" }, "note": "会走三步", "date": "2026.03" },
+        { "month": 12, "photo": { "src": "m12.jpg", "alt": "第十二个月", "ratio": "4:5" }, "note": "一岁了", "date": "2026.04" }
+      ]
+    },
+    {
+      "id": "growth",
+      "kind": "growth",
+      "enabled": true,
+      "points": [
+        { "month": 0, "height": 50.2, "weight": 3.4 },
+        { "month": 1, "height": 54.6, "weight": 4.5 },
+        { "month": 2, "height": 58.1, "weight": 5.3 },
+        { "month": 3, "height": 61.2, "weight": 6.1 },
+        { "month": 4, "height": 63.8, "weight": 6.8 },
+        { "month": 5, "height": 66.0, "weight": 7.4 },
+        { "month": 6, "height": 68.5, "weight": 8.1 },
+        { "month": 7, "height": 70.1, "weight": 8.5 },
+        { "month": 8, "height": 71.8, "weight": 8.9 },
+        { "month": 9, "height": 73.2, "weight": 9.2 },
+        { "month": 10, "height": 74.5, "weight": 9.5 },
+        { "month": 11, "height": 75.3, "weight": 9.7 },
+        { "month": 12, "height": 76.0, "weight": 9.8 }
+      ],
+      "teeth": 8,
+      "firsts": [
+        { "label": "第一次翻身", "at": "4 个月 12 天" },
+        { "label": "第一次叫妈妈", "at": "9 个月 3 天" },
+        { "label": "第一次站起来", "at": "11 个月 8 天" },
+        { "label": "第一次走路", "at": "12 个月 2 天" }
+      ]
+    },
+    {
+      "id": "zhuazhou",
+      "kind": "zhuazhou",
+      "enabled": true,
+      "items": [
+        { "key": "brush", "label": "毛笔", "meaning": "以后大概会很喜欢涂涂画画。", "fortune": "抓到了毛笔" },
+        { "key": "book", "label": "线装书", "meaning": "是个坐得住、爱看书的小朋友。", "fortune": "抓到了书" },
+        { "key": "abacus", "label": "算盘", "meaning": "对数字敏感，将来会算账。", "fortune": "抓到了算盘" },
+        { "key": "seal", "label": "印章", "meaning": "将来是要做主的人。", "fortune": "抓到了印章" },
+        { "key": "coin", "label": "铜钱", "meaning": "一辈子不缺钱花。", "fortune": "抓到了铜钱" },
+        { "key": "stethoscope", "label": "听诊器", "meaning": "心细，会照顾人。", "fortune": "抓到了听诊器" }
+      ]
+    },
+    {
+      "id": "gallery",
+      "kind": "gallery",
+      "enabled": true,
+      "photos": [
+        { "src": "p01.jpg", "alt": "全家福", "ratio": "4:5" },
+        { "src": "p02.jpg", "alt": "第一次游泳", "ratio": "1:1" },
+        { "src": "p03.jpg", "alt": "睡着的样子", "ratio": "4:5" },
+        { "src": "p04.jpg", "alt": "在草地上", "ratio": "3:4" },
+        { "src": "p05.jpg", "alt": "和外婆", "ratio": "4:5" },
+        { "src": "p06.jpg", "alt": "第一次坐小推车", "ratio": "16:9" },
+        { "src": "p07.jpg", "alt": "玩水", "ratio": "1:1" },
+        { "src": "p08.jpg", "alt": "生日蛋糕", "ratio": "4:5" },
+        { "src": "p09.jpg", "alt": "扶着栏杆", "ratio": "3:4" },
+        { "src": "p10.jpg", "alt": "在奶奶怀里", "ratio": "4:5" },
+        { "src": "p11.jpg", "alt": "第一次吃柠檬", "ratio": "4:5" },
+        { "src": "p12.jpg", "alt": "午睡", "ratio": "1:1" },
+        { "src": "p13.jpg", "alt": "穿新鞋", "ratio": "4:5" },
+        { "src": "p14.jpg", "alt": "看窗外", "ratio": "3:4" },
+        { "src": "p15.jpg", "alt": "在公园", "ratio": "16:9" },
+        { "src": "p16.jpg", "alt": "抓周现场", "ratio": "4:5" },
+        { "src": "p17.jpg", "alt": "和爸爸", "ratio": "4:5" },
+        { "src": "p18.jpg", "alt": "玩积木", "ratio": "1:1" },
+        { "src": "p19.jpg", "alt": "洗澡前的笑", "ratio": "3:4" },
+        { "src": "p20.jpg", "alt": "第一次看雪", "ratio": "4:5" },
+        { "src": "p21.jpg", "alt": "抱着小熊", "ratio": "4:5" },
+        { "src": "p22.jpg", "alt": "学步车", "ratio": "16:9" },
+        { "src": "p23.jpg", "alt": "和妈妈的手", "ratio": "1:1" },
+        { "src": "p24.jpg", "alt": "第一次理发", "ratio": "4:5" },
+        { "src": "p25.jpg", "alt": "晒太阳", "ratio": "3:4" },
+        { "src": "p26.jpg", "alt": "生日帽", "ratio": "4:5" },
+        { "src": "p27.jpg", "alt": "抓蛋糕", "ratio": "1:1" },
+        { "src": "p28.jpg", "alt": "和爷爷", "ratio": "4:5" },
+        { "src": "p29.jpg", "alt": "睡前故事", "ratio": "3:4" },
+        { "src": "p30.jpg", "alt": "一岁生日合照", "ratio": "16:9" }
+      ]
+    },
+    {
+      "id": "letter",
+      "kind": "letter",
+      "enabled": true,
+      "from": "妈妈",
+      "to": "小满",
+      "title": "写给你的第一封信",
+      "body": "你来的那天下了很大的雨。\n护士把你放在我胸口的时候，你睁着眼睛看我，好像早就在等我。\n这一年，你学会了翻身、坐着、扶着站起来，也学会了在人群里一眼找到我。\n谢谢你选中我们。\n以后你会有自己的路，我们只负责在你回头的时候，一直在这里。",
+      "signature": "妈妈 · 2026.04.17"
+    },
+    {
+      "id": "future",
+      "kind": "futureLetter",
+      "enabled": true,
+      "title": "给十八岁的小满",
+      "unlockAt": "2043-04-17",
+      "body": "如果你读到这里，说明你已经十八岁了。\n妈妈写这封信的时候，你才刚学会走路，会把饼干举得很高，然后笑得停不下来。\n我不知道十八岁的你是什么样子，但我知道，你一定已经去过很多地方，也有了自己的秘密。\n希望你仍然愿意回家吃饭。",
+      "from": "妈妈",
+      "writtenAt": "2026.04.17 写"
+    },
+    {
+      "id": "bless",
+      "kind": "guestbook",
+      "enabled": true,
+      "messages": [
+        { "text": "愿你一生被爱，也懂得爱人。", "from": "外婆" },
+        { "text": "长大要记得回来看奶奶。", "from": "奶奶", "relation": "奶奶" },
+        { "text": "慢慢长，不着急。", "from": "爸爸" },
+        { "text": "下次见面给你买小车。", "from": "舅舅", "relation": "舅舅" },
+        { "text": "要健康，要快乐。", "from": "姑姑" },
+        { "text": "一岁啦，欢迎来到这个世界。", "from": "干妈" }
+      ]
+    },
+    {
+      "id": "end",
+      "kind": "outro",
+      "enabled": true,
+      "thanks": "谢谢你来看我",
+      "signature": "小满 · 一周岁",
+      "showQr": true
+    }
+  ]
+}

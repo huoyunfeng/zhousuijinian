@@ -1,0 +1,521 @@
+/**
+ * PDF 打印模板（DEV_SPEC 20.11 / 4.10.2 / 4.10.7）。
+ * 每页固定 1080×1920 px，Chromium 按 96dpi 换算即 9:16。
+ */
+
+@page {
+  size: 1080px 1920px;
+  margin: 0;
+}
+
+.pdf-root {
+  background: #ffffff;
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.pdf-page {
+  position: relative;
+  box-sizing: border-box;
+  width: 1080px;
+  height: 1920px;
+  overflow: hidden;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  break-after: page;
+  page-break-after: always;
+}
+
+.pdf-page:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+.pdf-body {
+  position: absolute;
+  top: 120px;
+  left: 72px;
+  right: 72px;
+  bottom: 96px;
+}
+
+.pdf-header {
+  position: absolute;
+  top: 12mm;
+  left: 72px;
+  right: 72px;
+  font-size: 8pt;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: var(--c-ink-3);
+}
+
+.pdf-footer {
+  position: absolute;
+  bottom: 10mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8pt;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  color: var(--c-ink-3);
+}
+
+/* 封面 */
+.pdf-page--cover {
+  color: #ffffff;
+}
+
+.pdf-cover__photo {
+  position: absolute;
+  inset: 0;
+}
+
+.pdf-cover__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 0%, rgba(0, 0, 0, 0.58) 100%);
+}
+
+.pdf-cover__inner {
+  position: absolute;
+  left: 72px;
+  right: 72px;
+  bottom: 148px;
+}
+
+.pdf-cover__eyebrow {
+  font-size: 14px;
+  letter-spacing: 0.24em;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.pdf-cover__name {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.pdf-cover__tagline {
+  margin-top: 20px;
+  font-size: 24px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+}
+
+.pdf-cover__seal {
+  position: absolute;
+  right: 22mm;
+  bottom: 32mm;
+  opacity: 0.92;
+  transform: rotate(-6deg);
+}
+
+.pdf-letter__end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4mm;
+}
+
+.pdf-letter__signature {
+  width: 40mm;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+
+.pdf-cover__meta {
+  margin-top: 28px;
+  font-family: var(--font-num);
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.pdf-cover__empty {
+  position: absolute;
+  inset: 0;
+  background: var(--c-accent-soft);
+}
+
+/* 章节标题 */
+.pdf-title {
+  font-family: var(--font-display);
+  font-size: 44px;
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.pdf-title__rule {
+  width: 56px;
+  height: 1px;
+  margin-top: 24px;
+  background: var(--c-line);
+}
+
+/* 十二个月 */
+.pdf-months {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px 24px;
+  margin-top: 64px;
+}
+
+.pdf-month__photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+}
+
+.pdf-month__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.pdf-month__index {
+  font-family: var(--font-num);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  color: var(--c-accent);
+}
+
+.pdf-month__date {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--c-ink-3);
+}
+
+.pdf-month__note {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.pdf-month__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  padding: 20px;
+  border: 1px dashed var(--c-line);
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--c-ink-3);
+}
+
+/* 照片框架：0.5pt 发丝线框 + 4% 投影（4.10.2） */
+.pdf-photo {
+  overflow: hidden;
+  border-radius: 2px;
+  outline: 0.5pt solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: var(--c-skeleton);
+}
+
+.pdf-photo .smart-image {
+  height: 100%;
+  background: var(--c-skeleton);
+}
+
+/* 成长 */
+.pdf-growth {
+  margin-top: 56px;
+}
+
+.pdf-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 36px 0;
+  border-top: 1px solid var(--c-line);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.pdf-stat {
+  text-align: center;
+}
+
+.pdf-stat__value {
+  font-family: var(--font-num);
+  font-size: 48px;
+  line-height: 1.1;
+  color: var(--c-ink);
+}
+
+.pdf-stat__unit {
+  margin-left: 4px;
+  font-size: 14px;
+  color: var(--c-ink-3);
+}
+
+.pdf-stat__label {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--c-ink-3);
+}
+
+.pdf-chart {
+  margin-top: 48px;
+}
+
+.pdf-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pdf-firsts {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 32px;
+  border-top: 1px solid var(--c-line);
+}
+
+.pdf-first {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--c-line);
+  font-size: 14px;
+  color: var(--c-ink-2);
+}
+
+.pdf-first__at {
+  font-family: var(--font-num);
+  font-size: 12px;
+  color: var(--c-ink-3);
+}
+
+/* 照片墙 */
+.pdf-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 56px;
+}
+
+.pdf-gallery__cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+/* 信件 */
+.pdf-letter {
+  margin-top: 56px;
+}
+
+.pdf-letter__body {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 2.05;
+  letter-spacing: 0.02em;
+}
+
+.pdf-letter__paragraph {
+  text-indent: 2em;
+  margin-bottom: 0.9em;
+}
+
+.pdf-letter__sign {
+  margin-top: 64px;
+  text-align: right;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.9;
+  color: var(--c-ink-2);
+  white-space: pre-line;
+}
+
+/* 祝福 */
+.pdf-bless {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 20px;
+  margin-top: 48px;
+}
+
+.pdf-bless__item {
+  padding: 24px 26px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: 4px;
+}
+
+.pdf-bless__text {
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.85;
+}
+
+.pdf-bless__from {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--c-ink-3);
+}
+
+.pdf-bless__more {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--c-ink-3);
+}
+
+/* 未来信：只有信封 */
+.pdf-envelope-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-envelope {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 720px;
+  height: 900px;
+  padding: 80px 72px;
+  box-sizing: border-box;
+  background: var(--c-surface);
+  border: 1px dashed var(--c-accent);
+  border-radius: 4px;
+  text-align: center;
+}
+
+.pdf-envelope__label {
+  font-size: 13px;
+  letter-spacing: 0.28em;
+  color: var(--c-ink-3);
+}
+
+.pdf-envelope__title {
+  margin-top: 32px;
+  font-family: var(--font-display);
+  font-size: 38px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+.pdf-envelope__date {
+  margin-top: 48px;
+  font-family: var(--font-num);
+  font-size: 36px;
+  letter-spacing: 0.14em;
+  color: var(--c-accent);
+}
+
+.pdf-envelope__hint {
+  margin-top: 16px;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: var(--c-ink-3);
+}
+
+.pdf-envelope__from {
+  margin-top: 72px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--c-ink-2);
+}
+
+/* 尾页 */
+.pdf-end-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-end {
+  text-align: center;
+}
+
+.pdf-end__thanks {
+  font-family: var(--font-display);
+  font-size: 40px;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+}
+
+.pdf-end__sign {
+  margin-top: 24px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: var(--c-ink-2);
+}
+
+.pdf-end__contact {
+  margin-top: 96px;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--c-ink-2);
+}
+
+.pdf-end__made {
+  margin-top: 16px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--c-ink-3);
+}
+
+/* 留白页 */
+.pdf-empty {
+  height: 100%;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    background: #e9e4dc;
+  }
+
+  .pdf-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 0;
+  }
+
+  .pdf-page {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@media print {
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .pdf-root {
+    display: block;
+  }
+
+  .pdf-page {
+    box-shadow: none;
+  }
+}

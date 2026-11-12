@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  status      String    @default("draft")
+  babyName    String
+  birthday    DateTime
+  theme       String    @default("paper-warm")
+  tier        String    @default("basic")
+  amount      Int       @default(39900)
+  depositPaid Int       @default(0)
+  finalPaid   Int       @default(0)
+  contact     String?
+  note        String?
+  revisions   Int       @default(0)
+  deliveredAt DateTime?
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  slug      String
+  type      String
+  payload   String?
+  createdAt DateTime @default(now())
+
+  @@index([slug, type])
+}
