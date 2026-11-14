@@ -23,14 +23,15 @@ export interface ImageSources {
   original: string;
 }
 
-export function imageSources(base: string, src: string): ImageSources {
+export function imageSources(base: string, src: string, version?: string): ImageSources {
   const key = photoKey(src);
-  const url = (suffix: string) => `${base}/${key}-${suffix}`;
+  const suffix = version ? `?v=${encodeURIComponent(version)}` : "";
+  const url = (name: string) => `${base}/${key}-${name}${suffix}`;
   return {
     avif: url("lg.avif"),
     webp: url("lg.webp"),
     webpSet: `${url("lg.webp")} 1600w, ${url("md.webp")} 900w, ${url("sm.webp")} 320w`,
     jpg: url("lg.jpg"),
-    original: `${base}/${src}`,
+    original: `${base}/${src}${suffix}`,
   };
 }

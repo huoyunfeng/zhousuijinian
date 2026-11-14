@@ -73,6 +73,8 @@ interface ManifestEntry {
   w: number;
   h: number;
   lqip: string;
+  /** 内容版本号：素材或调色变化后更新，用于绕开图片长缓存 */
+  v: string;
 }
 
 function arg(name: string): string | undefined {
@@ -211,10 +213,12 @@ async function processImage(
     .webp({ quality: 30 })
     .toBuffer();
 
+  const stat = fs.statSync(src);
   return {
     w: raster.width,
     h: raster.height,
     lqip: `data:image/webp;base64,${tiny.toString("base64")}`,
+    v: `${Math.round(stat.mtimeMs).toString(36)}-${stat.size.toString(36)}-${look}`,
   };
 }
 

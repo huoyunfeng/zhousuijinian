@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { OutroSection, Photo, SectionProps } from "@/lib/types";
 import { OUTRO, POSTER } from "@/lib/copy";
 import { dottedDate } from "@/lib/date";
-import { imageSources } from "@/lib/images";
+import { imageSources, photoKey } from "@/lib/images";
 import { logEvent } from "@/lib/events";
 import { useStoryUi } from "@/components/StoryContext";
 import { SmartImage } from "@/components/ui/SmartImage";
@@ -35,7 +35,7 @@ export default function Outro({ data }: SectionProps<OutroSection>) {
       const canvas = document.createElement("canvas");
       const { drawPoster, loadPosterImages } = await import("@/lib/poster");
       const images = await loadPosterImages(
-        imageSources(ui.base, hero.cover.src).jpg,
+        imageSources(ui.base, hero.cover.src, ui.manifest[photoKey(hero.cover.src)]?.v).jpg,
         `${ui.base}/qr.png`,
       );
       drawPoster(canvas, {

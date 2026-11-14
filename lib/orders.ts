@@ -354,6 +354,58 @@ export async function saveStoryJson(slug: string, value: unknown): Promise<Admin
   return toAdminOrder(order);
 }
 
+export interface StoryAssetRefs {
+  cover?: string;
+  months?: Array<{ month: number; src: string }>;
+  gallery?: string[];
+}
+
+/**
+ * 素材上传后同步 story.json 的引用：
+ * 封面写入 hero、月照写入对应 month、精选追加到 gallery，
+ * 否则文件虽然落盘，页面仍然只渲染 story 里列出的照片。
+ */
+export function syncStoryAssetRefs(slug: string, refs: StoryAssetRefs): void {
+  const parsed = readParsedStory(slug);
+  let changed = false;
+
+  if (refs.cover) {
+    const hero = parsed.sections.find((section) => section.kind === "hero");
+    if (hero && hero.kind === "hero" && hero.cover.src !== refs.cover) {
+      hero.cover.src = refs.cover;
+      changed = true;
+    }
+  }
+
+  if (refs.months && refs.months.length > 0) {
+    const section = parsed.sections.find((item) => item.kind === "timeline12");
+    if (section && section.kind === "timeline12") {
+      for (const entry of refs.months) {
+        const item = section.items.find((month) => month.month === entry.month);
+        if (!item) continue;
+        if (item.photo.src !== entry.src) {
+          item.photo.src = entry.src;
+          changed = true;
+        }
+      }
+    }
+  }
+
+  if (refs.gallery && refs.gallery.length > 0) {
+    const section = parsed.sections.find((item) => item.kind === "gallery");
+    if (section && section.kind === "gallery") {
+      for (const src of refs.gallery) {
+        if (section.photos.some((photo) => photo.src === src)) continue;
+        if (section.photos.length >= 30) break;
+        section.photos.push({ src, alt: "", ratio: "4:5" });
+        changed = true;
+      }
+    }
+  }
+
+  if (changed) writeParsedStory(slug, parsed);
+}
+
 export async function resetStoryPassword(slug: string, password: string): Promise<void> {
   if (!/^\d{4}$/.test(password)) throw new Error(VALIDATION.password);
   const parsed = readParsedStory(slug);

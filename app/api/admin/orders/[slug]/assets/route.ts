@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { adminGuard, apiError, apiOk } from "@/lib/api";
 import { ADMIN, API_ERRORS, VALIDATION } from "@/lib/copy";
-import { findOrder } from "@/lib/orders";
+import { findOrder, syncStoryAssetRefs } from "@/lib/orders";
 import { orderDir } from "@/lib/story";
 import { processOrderAssets } from "@/lib/pipeline";
 
@@ -19,6 +19,7 @@ interface RouteContext {
 const IMAGE_EXT = new Set(["jpg", "jpeg", "png", "webp", "avif", "heic", "heif"]);
 const MAX_ORDER_BYTES = 500 * 1024 * 1024;
 const MAX_AUDIO_BYTES = 3 * 1024 * 1024;
+const GALLERY_SLOTS = 30;
 const PURPOSES = new Set(["cover", "monthly", "gallery", "bgm"]);
 
 function fileExt(name: string): string {
@@ -35,16 +36,34 @@ function dirSize(dir: string): number {
     .reduce((sum, size) => sum + size, 0);
 }
 
-/** 找到该前缀下一个未占用的编号（1..total），都已占用返回 null */
-function nextSlot(rawDir: string, prefix: string, total: number): number | null {
+/** 目录中该前缀已占用的编号（1..total） */
+function occupiedSlots(rawDir: string, prefix: string, total: number): Set<number> {
+  const names = fs.readdirSync(rawDir);
+  const occupied = new Set<number>();
   for (let index = 1; index <= total; index += 1) {
     const key = `${prefix}${String(index).padStart(2, "0")}`;
-    const exists = fs
-      .readdirSync(rawDir)
-      .some((file) => file.replace(/\.[a-z0-9]+$/i, "").toLowerCase() === key);
-    if (!exists) return index;
+    if (names.some((file) => file.replace(/\.[a-z0-9]+$/i, "").toLowerCase() === key)) {
+      occupied.add(index);
+    }
   }
-  return null;
+  return occupied;
+}
+
+/** 该前缀的空槽位，按编号升序 */
+function freeSlots(occupied: Set<number>, total: number): number[] {
+  const free: number[] = [];
+  for (let index = 1; index <= total; index += 1) {
+    if (!occupied.has(index)) free.push(index);
+  }
+  return free;
+}
+
+/** 覆盖前清理同编号的其它扩展名文件，避免同一槽位留下两份 */
+function removeOtherExt(rawDir: string, key: string, keepExt: string): void {
+  for (const file of fs.readdirSync(rawDir)) {
+    if (file.replace(/\.[a-z0-9]+$/i, "").toLowerCase() !== key) continue;
+    if (fileExt(file) !== keepExt) fs.unlinkSync(path.join(rawDir, file));
+  }
 }
 
 export async function POST(request: NextRequest, context: RouteContext): Promise<NextResponse> {
@@ -72,6 +91,18 @@ export async function POST(request: NextRequest, context: RouteContext): Promise
     return apiError("SCHEMA_INVALID", ADMIN.detail.assets.noFiles, 422);
   }
 
+  // 月照按月上传：必须指定月份，且每次一张
+  const isMonthly = purpose === "monthly";
+  const month = isMonthly ? Number.parseInt(String(form.get("month") ?? ""), 10) : 0;
+  if (isMonthly) {
+    if (!Number.isInteger(month) || month < 1 || month > 12) {
+      return apiError("SCHEMA_INVALID", ADMIN.detail.assets.monthInvalid, 422);
+    }
+    if (files.length !== 1) {
+      return apiError("SCHEMA_INVALID", ADMIN.detail.assets.monthOne, 422);
+    }
+  }
+
   const rawDir = path.join(orderDir(slug), "raw");
   fs.mkdirSync(rawDir, { recursive: true });
 
@@ -80,7 +111,16 @@ export async function POST(request: NextRequest, context: RouteContext): Promise
     return apiError("SCHEMA_INVALID", ADMIN.detail.assets.orderTooLarge, 422);
   }
 
+  const isGallery = purpose === "gallery";
+  const occupied = isGallery ? occupiedSlots(rawDir, "p", GALLERY_SLOTS) : new Set<number>();
+  const free = isGallery ? freeSlots(occupied, GALLERY_SLOTS) : [];
+
   const saved: string[] = [];
+  const replaced: string[] = [];
+  const months: Array<{ month: number; src: string }> = [];
+  const gallery: string[] = [];
+  let cover: string | undefined;
+  let assigned = 0;
   try {
     for (const file of files) {
       const ext = fileExt(file.name);
@@ -99,15 +139,26 @@ export async function POST(request: NextRequest, context: RouteContext): Promise
           return apiError("SCHEMA_INVALID", ADMIN.detail.assets.unsupported, 422);
         }
         if (purpose === "cover") {
-          target = `cover.${ext === "jpeg" ? "jpg" : ext}`;
-        } else if (purpose === "monthly") {
-          const slot = nextSlot(rawDir, "m", 12);
-          if (slot === null) return apiError("SCHEMA_INVALID", ADMIN.detail.assets.slotFull, 422);
-          target = `m${String(slot).padStart(2, "0")}.${ext}`;
+          target = `cover.${ext}`;
+          removeOtherExt(rawDir, "cover", ext);
+          cover = target;
+        } else if (isMonthly) {
+          // 指定月份直接落到对应槽位，重复上传即替换
+          const key = `m${String(month).padStart(2, "0")}`;
+          if (occupiedSlots(rawDir, "m", 12).has(month)) replaced.push(key);
+          removeOtherExt(rawDir, key, ext);
+          target = `${key}.${ext}`;
+          months.push({ month, src: target });
         } else {
-          const slot = nextSlot(rawDir, "p", 30);
-          if (slot === null) return apiError("SCHEMA_INVALID", ADMIN.detail.assets.slotFull, 422);
-          target = `p${String(slot).padStart(2, "0")}.${ext}`;
+          // 精选：先填空位；槽位全满时从 01 开始按顺序覆盖
+          const slot =
+            assigned < free.length ? free[assigned] : ((assigned - free.length) % GALLERY_SLOTS) + 1;
+          assigned += 1;
+          const key = `p${String(slot).padStart(2, "0")}`;
+          if (occupied.has(slot)) replaced.push(key);
+          removeOtherExt(rawDir, key, ext);
+          target = `${key}.${ext}`;
+          gallery.push(target);
         }
       }
 
@@ -115,8 +166,15 @@ export async function POST(request: NextRequest, context: RouteContext): Promise
       saved.push(target);
     }
 
+    // 文件落盘后同步 story.json 引用，否则新图不会出现在页面里
+    syncStoryAssetRefs(slug, { cover, months, gallery });
+
     const result = await processOrderAssets(slug);
-    return apiOk({ saved, warnings: result.warnings, totalBytes: result.totalBytes });
+    const warnings = [...result.warnings];
+    if (isGallery && replaced.length > 0) {
+      warnings.unshift(ADMIN.detail.assets.overwritten(replaced.join("、")));
+    }
+    return apiOk({ saved, warnings, totalBytes: result.totalBytes });
   } catch (error) {
     return apiError(
       "INTERNAL",

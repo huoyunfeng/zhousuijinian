@@ -35,12 +35,14 @@ export async function processOrderAssets(slug: string): Promise<ProcessResult> {
   fs.mkdirSync(outDir, { recursive: true });
 
   const files = fs.readdirSync(rawDir).filter((file) => IMAGE_RE.test(file)).sort();
-  const manifest: Record<string, { w: number; h: number; lqip: string }> = {};
+  const manifest: Record<string, { w: number; h: number; lqip: string; v: string }> = {};
 
   for (const file of files) {
     const key = photoKey(file);
     if (!key) continue;
-    const input = sharp(path.join(rawDir, file)).rotate();
+    const srcPath = path.join(rawDir, file);
+    const srcStat = fs.statSync(srcPath);
+    const input = sharp(srcPath).rotate();
     const meta = await input.metadata();
     const width = meta.width ?? 0;
     const height = meta.height ?? 0;
@@ -84,6 +86,7 @@ export async function processOrderAssets(slug: string): Promise<ProcessResult> {
       w: Math.round(width * scale),
       h: Math.round(height * scale),
       lqip: `data:image/webp;base64,${tiny.toString("base64")}`,
+      v: `${Math.round(srcStat.mtimeMs).toString(36)}-${srcStat.size.toString(36)}`,
     };
   }
 

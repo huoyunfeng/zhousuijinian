@@ -181,6 +181,8 @@ export interface ImageManifestEntry {
   w: number;
   h: number;
   lqip: string;
+  /** 内容版本号：素材被覆盖后变化，用于绕开 30 天图片缓存 */
+  v?: string;
 }
 
 export type ImageManifest = Record<string, ImageManifestEntry>;

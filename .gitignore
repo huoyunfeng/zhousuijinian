@@ -1,8 +1,9 @@
 node_modules/
 .next/
 out/
-build/
+/build/
 dist/
+tsconfig.tsbuildinfo
 coverage/
 
 .env

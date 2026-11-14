@@ -23,14 +23,22 @@ interface ApiResponse {
   error?: { message?: string; detail?: string[] };
 }
 
+const GALLERY_SLOTS = 30;
+const MONTH_SLOTS = 12;
+
 export function AssetsTab({ slug, manifest, thumbs, checklist }: AssetsTabProps) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [purpose, setPurpose] = useState<Purpose>("monthly");
+  const [month, setMonth] = useState(1);
   const [files, setFiles] = useState<File[]>([]);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [warnings, setWarnings] = useState<string[]>([]);
+
+  const galleryFilled = Array.from({ length: GALLERY_SLOTS }, (_, index) => `p${String(index + 1).padStart(2, "0")}`).filter(
+    (key) => manifest[key],
+  ).length;
 
   const upload = async () => {
     if (busy || files.length === 0) return;
@@ -40,6 +48,7 @@ export function AssetsTab({ slug, manifest, thumbs, checklist }: AssetsTabProps)
     try {
       const form = new FormData();
       form.set("purpose", purpose);
+      if (purpose === "monthly") form.set("month", String(month));
       for (const file of files) form.append("files", file);
       const response = await fetch(`/api/admin/orders/${slug}/assets`, { method: "POST", body: form });
       const payload = (await response.json().catch(() => ({}))) as ApiResponse;
@@ -48,6 +57,8 @@ export function AssetsTab({ slug, manifest, thumbs, checklist }: AssetsTabProps)
         setMessage(detail ?? payload.error?.message ?? ADMIN.errors.general);
         return;
       }
+      const saved = payload.data?.saved ?? [];
+      if (saved.length > 0) setMessage(ADMIN.detail.assets.uploaded(saved.map((name) => name.slice(0, name.lastIndexOf("."))).join("、")));
       setWarnings(payload.data?.warnings ?? []);
       setFiles([]);
       if (inputRef.current) inputRef.current.value = "";
@@ -69,7 +80,13 @@ export function AssetsTab({ slug, manifest, thumbs, checklist }: AssetsTabProps)
             <select
               className="admin-select mt-1"
               value={purpose}
-              onChange={(event) => setPurpose(event.target.value as Purpose)}
+              onChange={(event) => {
+                setPurpose(event.target.value as Purpose);
+                setFiles([]);
+                setMessage("");
+                setWarnings([]);
+                if (inputRef.current) inputRef.current.value = "";
+              }}
             >
               <option value="monthly">{ADMIN.detail.assets.purposes.monthly}</option>
               <option value="gallery">{ADMIN.detail.assets.purposes.gallery}</option>
@@ -77,10 +94,26 @@ export function AssetsTab({ slug, manifest, thumbs, checklist }: AssetsTabProps)
               <option value="bgm">{ADMIN.detail.assets.purposes.bgm}</option>
             </select>
           </label>
+          {purpose === "monthly" ? (
+            <label className="text-xs text-ink-2">
+              {ADMIN.detail.assets.month}
+              <select
+                className="admin-select mt-1"
+                value={month}
+                onChange={(event) => setMonth(Number(event.target.value))}
+              >
+                {Array.from({ length: MONTH_SLOTS }, (_, index) => (
+                  <option key={index + 1} value={index + 1}>
+                    {ADMIN.detail.assets.monthOption(index + 1)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
           <input
             ref={inputRef}
             type="file"
-            multiple
+            multiple={purpose === "gallery"}
             className="text-xs"
             accept={purpose === "bgm" ? "audio/mpeg" : "image/*"}
             onChange={(event) => setFiles(Array.from(event.target.files ?? []))}
@@ -89,7 +122,13 @@ export function AssetsTab({ slug, manifest, thumbs, checklist }: AssetsTabProps)
             {busy ? ADMIN.detail.assets.uploading : ADMIN.detail.assets.upload}
           </button>
         </div>
-        <p className="text-[11px] text-ink-3">{ADMIN.detail.assets.dragHint}</p>
+        <p className="text-[11px] text-ink-3">
+          {purpose === "monthly"
+            ? ADMIN.detail.assets.monthHint
+            : purpose === "gallery"
+              ? ADMIN.detail.assets.galleryHint(galleryFilled, GALLERY_SLOTS)
+              : ADMIN.detail.assets.dragHint}
+        </p>
         {files.length > 0 ? (
           <p className="text-[11px] text-ink-2">{files.map((file) => file.name).join(" · ")}</p>
         ) : null}

@@ -37,8 +37,8 @@ export function SmartImage({
     return <div className={clsx("skeleton", className)} style={{ aspectRatio: RATIO_VALUES[photo.ratio], ...style }} />;
   }
 
-  const sources = imageSources(base, photo.src);
   const entry = manifest[photoKey(photo.src)];
+  const sources = imageSources(base, photo.src, entry?.v);
   const aspect = RATIO_VALUES[photo.ratio];
   const wrapperStyle: CSSProperties = {
     ...(fill ? {} : { aspectRatio: aspect }),
